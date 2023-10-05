@@ -23,3 +23,4 @@ export 'package:Pilih_Dhewe/Profil/ApiProfil.dart';
 export 'package:Pilih_Dhewe/Profil/Profil.dart';
 export 'package:Pilih_Dhewe/Settings/Settings.dart';
 export 'package:Pilih_Dhewe/SplashScreen/SplashScreen.dart';
+export 'package:Pilih_Dhewe/state_util.dart';
