@@ -1,10 +1,6 @@
 import 'package:Pilih_Dhewe/core.dart';
-navigatorKey: Get.navigatorKey,
-import 'package:Pilih_Dhewe/SplashScreen/SplashScreen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
