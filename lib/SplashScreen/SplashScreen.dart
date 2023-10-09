@@ -46,7 +46,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
             ),
           ));
     } else {
-      finalTheme = (finalTheme != null) ? dataTheme! : "Terang";
+      // finalTheme = (finalTheme != null) ? dataTheme! : "Terang";
 
       Navigator.pushReplacement(
         context,

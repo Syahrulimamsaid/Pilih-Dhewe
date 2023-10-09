@@ -52,7 +52,7 @@ class _ProfilPageState extends State<ProfilPage> {
   }
 
   void MenujuPilihDhewe() async {
-    String url = "https://pilihdhewe.my.id";
+    String url = "https://pilihdhewe.my.id/";
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
     } else {
@@ -347,14 +347,14 @@ class _ProfilPageState extends State<ProfilPage> {
                             },
                             child: BuildMenu(Icons.workspace_premium_outlined,
                                 "Hasil Pilihan")),
-                        InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: ((context) => SettingsPage())));
-                            },
-                            child: BuildMenu(Symbols.settings, "Settings")),
+                        // InkWell(
+                        //     onTap: () {
+                        //       Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //               builder: ((context) => SettingsPage())));
+                        //     },
+                        //     child: BuildMenu(Symbols.settings, "Settings")),
                         InkWell(
                             onTap: () {
                               Navigator.push(

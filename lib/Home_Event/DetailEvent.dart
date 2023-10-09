@@ -3,6 +3,7 @@ import 'package:Pilih_Dhewe/Home_Event/DetailCandidate.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailEventPage extends StatefulWidget {
   final String Title;
@@ -65,6 +66,15 @@ class _DetailEventPageState extends State<DetailEventPage> {
       setState(() {});
     } catch (e) {
       Pilihan = "Failed $e";
+    }
+  }
+
+  void MenujuPilihDheweResult(int IDEvent) async {
+    String url = "https://pilihdhewe.my.id/event/result/" + IDEvent.toString();
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    } else {
+      throw "Tidak dapat Membuka Link";
     }
   }
 
@@ -138,184 +148,175 @@ class _DetailEventPageState extends State<DetailEventPage> {
                   future: Future.delayed(Duration(seconds: 4)),
                   builder: (context, snapshot) {
                     return (Status == false)
-                        ? ListView.builder(
-                            itemCount: widget.KadidatDetail.length + 1,
-                            itemBuilder: (context, index) {
-                              if (index == 0) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(40),
-                                  ),
-                                  margin: EdgeInsets.fromLTRB(15, 0, 15, 40),
-                                  width: MediaQuery.of(context).size.width * 1,
-                                  child: Material(
-                                    elevation: 4,
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(40),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(40)),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                1,
-                                            height: (widget.Title.length >= 38)
-                                                ? MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.25
-                                                : MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.22,
-                                            child: Material(
-                                              elevation: 5,
-                                              color: Colors.transparent,
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
+                        ? CustomScrollView(slivers: [
+                            SliverToBoxAdapter(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                                margin: EdgeInsets.fromLTRB(15, 0, 15, 40),
+                                width: MediaQuery.of(context).size.width * 1,
+                                child: Material(
+                                  elevation: 4,
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(40),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(40)),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              1,
+                                          height: (widget.Title.length >= 38)
+                                              ? MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.25
+                                              : MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.22,
+                                          child: Material(
+                                            elevation: 5,
+                                            color: Colors.transparent,
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                      colors: [
+                                                        Color.fromARGB(
+                                                            255, 0, 76, 255),
+                                                        Color.fromARGB(
+                                                            255, 12, 87, 255),
+                                                        Color.fromARGB(
+                                                            255, 47, 131, 255),
+                                                      ],
+                                                      begin:
+                                                          Alignment.topCenter,
+                                                      end: Alignment
+                                                          .bottomRight),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30)),
                                               child: Container(
-                                                decoration: BoxDecoration(
-                                                    gradient: LinearGradient(
-                                                        colors: [
-                                                          Color.fromARGB(
-                                                              255, 0, 76, 255),
-                                                          Color.fromARGB(
-                                                              255, 12, 87, 255),
-                                                          Color.fromARGB(255,
-                                                              47, 131, 255),
-                                                        ],
-                                                        begin:
-                                                            Alignment.topCenter,
-                                                        end: Alignment
-                                                            .bottomRight),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30)),
-                                                child: Container(
-                                                  // color: Colors.red,
-                                                  margin: EdgeInsets.fromLTRB(
-                                                      10, 3, 10, 3),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      BuildItem(
-                                                          iconData: Icons
-                                                              .poll_rounded,
-                                                          Widget: widget.Title,
-                                                          warna: Colors.white,
-                                                          Font: "Poppins",
-                                                          fontWeight:
-                                                              FontWeight.w800),
-                                                      BuildItem(
-                                                          iconData: Icons
-                                                              .person_pin_rounded,
-                                                          Widget: widget
-                                                                      .ParticipantData
-                                                                  .toString() +
-                                                              " / " +
-                                                              widget
-                                                                  .Participant,
-                                                          warna: Colors.white,
-                                                          Font: "Poppins",
-                                                          fontWeight:
-                                                              FontWeight.w800),
-                                                      BuildItem(
-                                                          iconData: Icons
-                                                              .calendar_month_rounded,
-                                                          Widget:
-                                                              widget.Duration,
-                                                          warna: Colors.white,
-                                                          Font: "Poppins",
-                                                          fontWeight:
-                                                              FontWeight.w800),
-                                                      BuildItem(
-                                                          iconData: Icons
-                                                              .question_mark_rounded,
-                                                          Widget: widget.Status,
-                                                          warna: (widget
-                                                                      .Status ==
-                                                                  "Active")
-                                                              ? Color.fromARGB(
-                                                                  255,
-                                                                  0,
-                                                                  255,
-                                                                  8)
-                                                              : (widget.Status ==
-                                                                      "End")
-                                                                  ? Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          248,
-                                                                          17,
-                                                                          0)
-                                                                  : Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          212,
-                                                                          212,
-                                                                          212),
-                                                          Font: "Poppins",
-                                                          fontWeight:
-                                                              FontWeight.w800),
-                                                    ],
-                                                  ),
+                                                // color: Colors.red,
+                                                margin: EdgeInsets.fromLTRB(
+                                                    10, 3, 10, 3),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    BuildItem(
+                                                        iconData:
+                                                            Icons.poll_rounded,
+                                                        Widget: widget.Title,
+                                                        warna: Colors.white,
+                                                        Font: "Poppins",
+                                                        fontWeight:
+                                                            FontWeight.w800),
+                                                    BuildItem(
+                                                        iconData: Icons
+                                                            .person_pin_rounded,
+                                                        Widget: widget
+                                                                    .ParticipantData
+                                                                .toString() +
+                                                            " / " +
+                                                            widget.Participant,
+                                                        warna: Colors.white,
+                                                        Font: "Poppins",
+                                                        fontWeight:
+                                                            FontWeight.w800),
+                                                    BuildItem(
+                                                        iconData: Icons
+                                                            .calendar_month_rounded,
+                                                        Widget: widget.Duration,
+                                                        warna: Colors.white,
+                                                        Font: "Poppins",
+                                                        fontWeight:
+                                                            FontWeight.w800),
+                                                    BuildItem(
+                                                        iconData: Icons
+                                                            .question_mark_rounded,
+                                                        Widget: widget.Status,
+                                                        warna: (widget.Status ==
+                                                                "Active")
+                                                            ? Color.fromARGB(
+                                                                255, 0, 255, 8)
+                                                            : (widget.Status ==
+                                                                    "End")
+                                                                ? Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        248,
+                                                                        17,
+                                                                        0)
+                                                                : Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        212,
+                                                                        212,
+                                                                        212),
+                                                        Font: "Poppins",
+                                                        fontWeight:
+                                                            FontWeight.w800),
+                                                  ],
                                                 ),
                                               ),
                                             ),
                                           ),
-                                          LayoutBuilder(
-                                              builder: (context, constraints) {
-                                            return Container(
-                                              padding:
-                                                  EdgeInsets.only(bottom: 25),
-                                              margin: EdgeInsets.fromLTRB(
-                                                  15, 15, 15, 0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 10),
-                                                      child: Text(
-                                                          "Description :")),
-                                                  Container(
-                                                    child: Text(
-                                                      widget.Description,
-                                                      style: TextStyle(
-                                                          fontFamily: "Arial",
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          color: const Color
-                                                                  .fromARGB(
-                                                              255, 2, 24, 43),
-                                                          fontSize: 12),
-                                                    ),
+                                        ),
+                                        LayoutBuilder(
+                                            builder: (context, constraints) {
+                                          return Container(
+                                            padding:
+                                                EdgeInsets.only(bottom: 25),
+                                            margin: EdgeInsets.fromLTRB(
+                                                15, 15, 15, 0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 10),
+                                                    child:
+                                                        Text("Description :")),
+                                                Container(
+                                                  child: Text(
+                                                    widget.Description,
+                                                    style: TextStyle(
+                                                        fontFamily: "Arial",
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: const Color
+                                                            .fromARGB(
+                                                            255, 2, 24, 43),
+                                                        fontSize: 12),
                                                   ),
-                                                ],
-                                              ),
-                                              width: constraints.maxWidth,
-                                            );
-                                          })
-                                        ],
-                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                            width: constraints.maxWidth,
+                                          );
+                                        })
+                                      ],
                                     ),
                                   ),
-                                );
-                              } else {
-                                // Widget kandidat
-                                final candidate =
-                                    widget.KadidatDetail[index - 1];
+                                ),
+                              ),
+                            ),
+                            SliverList(
+                              delegate:
+                                  SliverChildBuilderDelegate((context, index) {
+                                final candidate = widget.KadidatDetail[index];
                                 return InkWell(
                                   onTap: () {
                                     Navigator.push(context,
@@ -334,189 +335,179 @@ class _DetailEventPageState extends State<DetailEventPage> {
                                   child: BuildVote(
                                     candidates: candidate,
                                   ),
-                                ); // Asumsikan BuildVote adalah untuk opsi pemungutan suara dari kandidat
-                              }
-                            },
-                          )
-                        : ListView.builder(
-                            itemCount: widget.KadidatDetail.length + 1,
-                            itemBuilder: (context, index) {
-                              if (index == 0) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(40),
-                                      border: Border.all(
-                                          width: 0.5, color: Colors.blue)),
-                                  margin: EdgeInsets.fromLTRB(15, 0, 15, 40),
-                                  width: MediaQuery.of(context).size.width * 1,
-                                  child: Material(
-                                    elevation: 4,
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(40),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(40)),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                1,
-                                            height: (widget.Title.length >= 38)
-                                                ? MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.25
-                                                : MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.22,
-                                            child: Material(
-                                              elevation: 5,
-                                              color: Colors.transparent,
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
+                                );
+                              }, childCount: widget.KadidatDetail.length),
+                            ),
+                          ])
+                        : CustomScrollView(slivers: [
+                            SliverToBoxAdapter(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                                margin: EdgeInsets.fromLTRB(15, 0, 15, 40),
+                                width: MediaQuery.of(context).size.width * 1,
+                                child: Material(
+                                  elevation: 4,
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(40),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(40)),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              1,
+                                          height: (widget.Title.length >= 38)
+                                              ? MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.25
+                                              : MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.22,
+                                          child: Material(
+                                            elevation: 5,
+                                            color: Colors.transparent,
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                      colors: [
+                                                        Color.fromARGB(
+                                                            255, 0, 76, 255),
+                                                        Color.fromARGB(
+                                                            255, 12, 87, 255),
+                                                        Color.fromARGB(
+                                                            255, 47, 131, 255),
+                                                      ],
+                                                      begin:
+                                                          Alignment.topCenter,
+                                                      end: Alignment
+                                                          .bottomRight),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30)),
                                               child: Container(
-                                                decoration: BoxDecoration(
-                                                    gradient: LinearGradient(
-                                                        colors: [
-                                                          Color.fromARGB(
-                                                              255, 0, 76, 255),
-                                                          Color.fromARGB(
-                                                              255, 12, 87, 255),
-                                                          Color.fromARGB(255,
-                                                              47, 131, 255),
-                                                        ],
-                                                        begin:
-                                                            Alignment.topCenter,
-                                                        end: Alignment
-                                                            .bottomRight),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30)),
-                                                child: Container(
-                                                  // color: Colors.red,
-                                                  margin: EdgeInsets.fromLTRB(
-                                                      10, 0, 10, 0),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      BuildItem(
-                                                          iconData: Icons
-                                                              .poll_outlined,
-                                                          Widget: widget.Title,
-                                                          warna: Colors.white,
-                                                          Font: "Poppins",
-                                                          fontWeight:
-                                                              FontWeight.w800),
-                                                      BuildItem(
-                                                          iconData: Icons
-                                                              .person_pin_outlined,
-                                                          Widget: widget
-                                                                      .ParticipantData
-                                                                  .toString() +
-                                                              " / " +
-                                                              widget
-                                                                  .Participant,
-                                                          warna: Colors.white,
-                                                          Font: "Poppins",
-                                                          fontWeight:
-                                                              FontWeight.w800),
-                                                      BuildItem(
-                                                          iconData: Icons
-                                                              .calendar_month_outlined,
-                                                          Widget:
-                                                              widget.Duration,
-                                                          warna: Colors.white,
-                                                          Font: "Poppins",
-                                                          fontWeight:
-                                                              FontWeight.w800),
-                                                      BuildItem(
-                                                          iconData: Icons
-                                                              .question_mark_outlined,
-                                                          Widget: widget.Status,
-                                                          warna: (widget
-                                                                      .Status ==
-                                                                  "Active")
-                                                              ? Color.fromARGB(
-                                                                  255,
-                                                                  0,
-                                                                  255,
-                                                                  8)
-                                                              : (widget.Status ==
-                                                                      "End")
-                                                                  ? Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          248,
-                                                                          17,
-                                                                          0)
-                                                                  : Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          212,
-                                                                          212,
-                                                                          212),
-                                                          Font: "Poppins",
-                                                          fontWeight:
-                                                              FontWeight.w800),
-                                                    ],
-                                                  ),
+                                                // color: Colors.red,
+                                                margin: EdgeInsets.fromLTRB(
+                                                    10, 3, 10, 3),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    BuildItem(
+                                                        iconData:
+                                                            Icons.poll_rounded,
+                                                        Widget: widget.Title,
+                                                        warna: Colors.white,
+                                                        Font: "Poppins",
+                                                        fontWeight:
+                                                            FontWeight.w800),
+                                                    BuildItem(
+                                                        iconData: Icons
+                                                            .person_pin_rounded,
+                                                        Widget: widget
+                                                                    .ParticipantData
+                                                                .toString() +
+                                                            " / " +
+                                                            widget.Participant,
+                                                        warna: Colors.white,
+                                                        Font: "Poppins",
+                                                        fontWeight:
+                                                            FontWeight.w800),
+                                                    BuildItem(
+                                                        iconData: Icons
+                                                            .calendar_month_rounded,
+                                                        Widget: widget.Duration,
+                                                        warna: Colors.white,
+                                                        Font: "Poppins",
+                                                        fontWeight:
+                                                            FontWeight.w800),
+                                                    BuildItem(
+                                                        iconData: Icons
+                                                            .question_mark_rounded,
+                                                        Widget: widget.Status,
+                                                        warna: (widget.Status ==
+                                                                "Active")
+                                                            ? Color.fromARGB(
+                                                                255, 0, 255, 8)
+                                                            : (widget.Status ==
+                                                                    "End")
+                                                                ? Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        248,
+                                                                        17,
+                                                                        0)
+                                                                : Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        212,
+                                                                        212,
+                                                                        212),
+                                                        Font: "Poppins",
+                                                        fontWeight:
+                                                            FontWeight.w800),
+                                                  ],
                                                 ),
                                               ),
                                             ),
                                           ),
-                                          LayoutBuilder(
-                                              builder: (context, constraints) {
-                                            return Container(
-                                              padding:
-                                                  EdgeInsets.only(bottom: 25),
-                                              margin: EdgeInsets.fromLTRB(
-                                                  15, 15, 15, 0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 10),
-                                                      child: Text(
-                                                          "Description :")),
-                                                  Container(
-                                                    child: Text(
-                                                      widget.Description,
-                                                      style: TextStyle(
-                                                          fontFamily: "Arial",
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          color: const Color
-                                                                  .fromARGB(
-                                                              255, 2, 24, 43),
-                                                          fontSize: 12),
-                                                    ),
+                                        ),
+                                        LayoutBuilder(
+                                            builder: (context, constraints) {
+                                          return Container(
+                                            padding:
+                                                EdgeInsets.only(bottom: 25),
+                                            margin: EdgeInsets.fromLTRB(
+                                                15, 15, 15, 0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 10),
+                                                    child:
+                                                        Text("Description :")),
+                                                Container(
+                                                  child: Text(
+                                                    widget.Description,
+                                                    style: TextStyle(
+                                                        fontFamily: "Arial",
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: const Color
+                                                            .fromARGB(
+                                                            255, 2, 24, 43),
+                                                        fontSize: 12),
                                                   ),
-                                                ],
-                                              ),
-                                              width: constraints.maxWidth,
-                                            );
-                                          })
-                                        ],
-                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                            width: constraints.maxWidth,
+                                          );
+                                        })
+                                      ],
                                     ),
                                   ),
-                                );
-                              } else {
-                                // Widget kandidat
-                                final candidate =
-                                    widget.KadidatDetail[index - 1];
+                                ),
+                              ),
+                            ),
+                            SliverList(
+                              delegate:
+                                  SliverChildBuilderDelegate((context, index) {
+                                final candidate = widget.KadidatDetail[index];
                                 return InkWell(
                                   onTap: () {
                                     Navigator.push(context,
@@ -527,17 +518,68 @@ class _DetailEventPageState extends State<DetailEventPage> {
                                             candidate.user.kelas.namakelas,
                                         GambarKadidat: candidate.user.gambar,
                                         VisiKadidat: candidate.visi,
-                                        MisiKadidat: candidate.misi,
                                         VideoKadidat: candidate.video,
+                                        MisiKadidat: candidate.misi,
                                       );
                                     }));
                                   },
                                   child: BuildVote(
                                       candidates: candidate, isVoted: Isvoted),
-                                ); // Asumsikan BuildVote adalah untuk opsi pemungutan suara dari kandidat
-                              }
-                            },
-                          );
+                                );
+                              }, childCount: widget.KadidatDetail.length),
+                            ),
+                            SliverToBoxAdapter(
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    top: 35, right: 20, left: 20, bottom: 15),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.07,
+                                child: Material(
+                                  elevation: 3.5,
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      gradient: LinearGradient(
+                                          colors: [
+                                            Color.fromARGB(255, 0, 76, 255),
+                                            Color.fromARGB(255, 12, 87, 255),
+                                            Color.fromARGB(255, 47, 131, 255),
+                                          ],
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter),
+                                    ),
+                                    child: Material(
+                                      elevation: 0,
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: InkWell(
+                                        onTap: () {
+                                          MenujuPilihDheweResult(
+                                              widget.Event_id);
+                                        },
+                                        splashColor: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        child: Center(
+                                          child: Text(
+                                            "Lihat Hasil",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w800),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ]);
                   },
                   // ))
                 ),
