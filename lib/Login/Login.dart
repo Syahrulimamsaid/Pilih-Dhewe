@@ -144,7 +144,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
               Kelas: postUser!.kelas.namakelas,
               GambarProfil: postUser!.gambar,
               IdKelas: postUser!.kelas.id,
-              Theme: widget.Theme,
             );
           }));
         } else {

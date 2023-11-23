@@ -47,14 +47,14 @@ class _ProfilPageState extends State<ProfilPage> {
           Kelas = dataMe!.kelas.namakelas;
           CandidateOf = dataMe!.candidateOf.length.toString();
         });
-      } 
+      }
     } catch (e) {}
   }
 
   void MenujuPilihDhewe() async {
-    String url = "https://pilihdhewe.my.id/";
-    if (await canLaunch(url)) {
-      await launch(url);
+    final Uri url = Uri.parse("https://pilihdhewe.my.id/");
+    if (!await canLaunch(url.toString())) {
+      !await launchUrl(url);
     } else {
       throw "Tidak dapat Membuka Link";
     }

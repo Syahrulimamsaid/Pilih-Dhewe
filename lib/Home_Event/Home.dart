@@ -20,7 +20,7 @@ class HomePage extends StatefulWidget {
   final String? Kelas;
   final int? IdKelas;
   final String? GambarProfil;
-  final String? Theme;
+  // final String? Theme;
   final Function()? refreshCallback;
 
   const HomePage(
@@ -33,7 +33,7 @@ class HomePage extends StatefulWidget {
       required this.GetToken,
       this.GambarProfil,
       this.Kelas,
-      this.Theme,
+      // this.Theme,
       this.refreshCallback});
 
   @override
@@ -87,13 +87,13 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  // void Hapus() async {
-  //   final SharedPreferences sharedPreferences =
-  //       await SharedPreferences.getInstance();
-  //   await sharedPreferences.remove('number_card');
-  //   await sharedPreferences.remove('password');
-  //   await sharedPreferences.remove('GetToken');
-  // }
+  void Hapus() async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    // await sharedPreferences.remove('number_card');
+    // await sharedPreferences.remove('password');
+    await sharedPreferences.remove('GetToken');
+  }
 
   void logout() {
     PostUser.logout(widget.GetToken).then((_) async {
@@ -269,7 +269,7 @@ class _HomePageState extends State<HomePage>
                                           btnCancelOnPress: () {},
                                           btnOkOnPress: () {
                                             logout();
-                                            //Hapus();
+                                            // Hapus();
                                           },
                                           btnOkColor: Colors.blue,
                                           btnCancelColor:
@@ -646,12 +646,9 @@ class _HomePageState extends State<HomePage>
         context,
         MaterialPageRoute(
             builder: (context) => ProfilPage(
-                 
                   GambarProfil:
                       (dataMe != null) ? dataMe?.gambar : widget.GambarProfil,
                   GetToken: widget.GetToken,
-                  Theme: widget.Theme,
-                  
                 )));
     _handleRefresh();
   }

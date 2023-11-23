@@ -70,9 +70,10 @@ class _DetailEventPageState extends State<DetailEventPage> {
   }
 
   void MenujuPilihDheweResult(int IDEvent) async {
-    String url = "https://pilihdhewe.my.id/event/result/" + IDEvent.toString();
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
+    Uri url = Uri.parse(
+        "https://pilihdhewe.my.id/event/result/" + IDEvent.toString());
+    if (!await canLaunchUrl(url)) {
+      await launchUrl(url);
     } else {
       throw "Tidak dapat Membuka Link";
     }
@@ -81,57 +82,69 @@ class _DetailEventPageState extends State<DetailEventPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 47, 131, 255),
-        body: Column(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width * 1,
-              height: MediaQuery.of(context).size.height * 0.12,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  Color.fromARGB(255, 0, 76, 255),
-                  Color.fromARGB(255, 12, 87, 255),
-                  Color.fromARGB(255, 47, 131, 255),
-                ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        // color: Colors.yellow,
-                        margin: EdgeInsets.fromLTRB(15, 0, 10, 0),
-                        child: Icon(
-                          FontAwesomeIcons.arrowLeft,
-                          color: Colors.white,
-                          size: 27,
+        backgroundColor: Color.fromARGB(255, 0, 76, 255),
+        body: Stack(children: [
+          SafeArea(
+            child: Column(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 1,
+                  height: MediaQuery.of(context).size.height * 0.09,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [
+                      Color.fromARGB(255, 0, 76, 255),
+                      Color.fromARGB(255, 12, 87, 255),
+                      Color.fromARGB(255, 47, 131, 255),
+                    ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            // color: Colors.yellow,
+                            margin: EdgeInsets.fromLTRB(15, 0, 10, 0),
+                            child: Icon(
+                              FontAwesomeIcons.arrowLeft,
+                              color: Colors.white,
+                              size: 27,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                            // color: Colors.green,
+                            child: Text(
+                          "Detail Event ",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        )),
+                      ),
+                    ],
                   ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                        // color: Colors.green,
-                        child: Text(
-                      "Detail Event ",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    )),
-                  ),
-                ],
-              ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 1,
+                  color: Color.fromARGB(255, 47, 131, 255),
+                  height: MediaQuery.of(context).size.height * 0.12,
+                )
+              ],
             ),
-            Container(
+          ),
+          Positioned(
+            bottom: 1,
+            child: Container(
               padding: EdgeInsets.only(
                 top: 5,
               ),
@@ -141,13 +154,13 @@ class _DetailEventPageState extends State<DetailEventPage> {
                       topLeft: Radius.circular(40),
                       topRight: Radius.circular(40))),
               width: MediaQuery.of(context).size.width * 1,
-              height: MediaQuery.of(context).size.height * 0.88,
+              height: MediaQuery.of(context).size.height * 0.85,
               child: Container(
                 margin: EdgeInsets.only(top: 10),
                 child: FutureBuilder(
                   future: Future.delayed(Duration(seconds: 4)),
                   builder: (context, snapshot) {
-                    return (Status == false)
+                    return (widget.Status == "End")
                         ? CustomScrollView(slivers: [
                             SliverToBoxAdapter(
                               child: Container(
@@ -172,7 +185,7 @@ class _DetailEventPageState extends State<DetailEventPage> {
                                                   .size
                                                   .width *
                                               1,
-                                          height: (widget.Title.length >= 38)
+                                          height: (widget.Title.length >= 30)
                                               ? MediaQuery.of(context)
                                                       .size
                                                       .height *
@@ -217,7 +230,7 @@ class _DetailEventPageState extends State<DetailEventPage> {
                                                     BuildItem(
                                                         iconData:
                                                             Icons.poll_rounded,
-                                                        Widget: widget.Title,
+                                                        WidgetIn: widget.Title,
                                                         warna: Colors.white,
                                                         Font: "Poppins",
                                                         fontWeight:
@@ -225,7 +238,7 @@ class _DetailEventPageState extends State<DetailEventPage> {
                                                     BuildItem(
                                                         iconData: Icons
                                                             .person_pin_rounded,
-                                                        Widget: widget
+                                                        WidgetIn: widget
                                                                     .ParticipantData
                                                                 .toString() +
                                                             " / " +
@@ -237,7 +250,8 @@ class _DetailEventPageState extends State<DetailEventPage> {
                                                     BuildItem(
                                                         iconData: Icons
                                                             .calendar_month_rounded,
-                                                        Widget: widget.Duration,
+                                                        WidgetIn:
+                                                            widget.Duration,
                                                         warna: Colors.white,
                                                         Font: "Poppins",
                                                         fontWeight:
@@ -245,198 +259,7 @@ class _DetailEventPageState extends State<DetailEventPage> {
                                                     BuildItem(
                                                         iconData: Icons
                                                             .question_mark_rounded,
-                                                        Widget: widget.Status,
-                                                        warna: (widget.Status ==
-                                                                "Active")
-                                                            ? Color.fromARGB(
-                                                                255, 0, 255, 8)
-                                                            : (widget.Status ==
-                                                                    "End")
-                                                                ? Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        248,
-                                                                        17,
-                                                                        0)
-                                                                : Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        212,
-                                                                        212,
-                                                                        212),
-                                                        Font: "Poppins",
-                                                        fontWeight:
-                                                            FontWeight.w800),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        LayoutBuilder(
-                                            builder: (context, constraints) {
-                                          return Container(
-                                            padding:
-                                                EdgeInsets.only(bottom: 25),
-                                            margin: EdgeInsets.fromLTRB(
-                                                15, 15, 15, 0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                    margin: EdgeInsets.only(
-                                                        bottom: 10),
-                                                    child:
-                                                        Text("Description :")),
-                                                Container(
-                                                  child: Text(
-                                                    widget.Description,
-                                                    style: TextStyle(
-                                                        fontFamily: "Arial",
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color: const Color
-                                                            .fromARGB(
-                                                            255, 2, 24, 43),
-                                                        fontSize: 12),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            width: constraints.maxWidth,
-                                          );
-                                        })
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SliverList(
-                              delegate:
-                                  SliverChildBuilderDelegate((context, index) {
-                                final candidate = widget.KadidatDetail[index];
-                                return InkWell(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return DetailCandidatePage(
-                                        NamaKadidat: candidate.user.name,
-                                        KelasKadidat:
-                                            candidate.user.kelas.namakelas,
-                                        GambarKadidat: candidate.user.gambar,
-                                        VisiKadidat: candidate.visi,
-                                        VideoKadidat: candidate.video,
-                                        MisiKadidat: candidate.misi,
-                                      );
-                                    }));
-                                  },
-                                  child: BuildVote(
-                                    candidates: candidate,
-                                  ),
-                                );
-                              }, childCount: widget.KadidatDetail.length),
-                            ),
-                          ])
-                        : CustomScrollView(slivers: [
-                            SliverToBoxAdapter(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(40),
-                                ),
-                                margin: EdgeInsets.fromLTRB(15, 0, 15, 40),
-                                width: MediaQuery.of(context).size.width * 1,
-                                child: Material(
-                                  elevation: 4,
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(40),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(40)),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              1,
-                                          height: (widget.Title.length >= 38)
-                                              ? MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.25
-                                              : MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.22,
-                                          child: Material(
-                                            elevation: 5,
-                                            color: Colors.transparent,
-                                            borderRadius:
-                                                BorderRadius.circular(30),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  gradient: LinearGradient(
-                                                      colors: [
-                                                        Color.fromARGB(
-                                                            255, 0, 76, 255),
-                                                        Color.fromARGB(
-                                                            255, 12, 87, 255),
-                                                        Color.fromARGB(
-                                                            255, 47, 131, 255),
-                                                      ],
-                                                      begin:
-                                                          Alignment.topCenter,
-                                                      end: Alignment
-                                                          .bottomRight),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          30)),
-                                              child: Container(
-                                                // color: Colors.red,
-                                                margin: EdgeInsets.fromLTRB(
-                                                    10, 3, 10, 3),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    BuildItem(
-                                                        iconData:
-                                                            Icons.poll_rounded,
-                                                        Widget: widget.Title,
-                                                        warna: Colors.white,
-                                                        Font: "Poppins",
-                                                        fontWeight:
-                                                            FontWeight.w800),
-                                                    BuildItem(
-                                                        iconData: Icons
-                                                            .person_pin_rounded,
-                                                        Widget: widget
-                                                                    .ParticipantData
-                                                                .toString() +
-                                                            " / " +
-                                                            widget.Participant,
-                                                        warna: Colors.white,
-                                                        Font: "Poppins",
-                                                        fontWeight:
-                                                            FontWeight.w800),
-                                                    BuildItem(
-                                                        iconData: Icons
-                                                            .calendar_month_rounded,
-                                                        Widget: widget.Duration,
-                                                        warna: Colors.white,
-                                                        Font: "Poppins",
-                                                        fontWeight:
-                                                            FontWeight.w800),
-                                                    BuildItem(
-                                                        iconData: Icons
-                                                            .question_mark_rounded,
-                                                        Widget: widget.Status,
+                                                        WidgetIn: widget.Status,
                                                         warna: (widget.Status ==
                                                                 "Active")
                                                             ? Color.fromARGB(
@@ -579,14 +402,492 @@ class _DetailEventPageState extends State<DetailEventPage> {
                                 ),
                               ),
                             )
-                          ]);
+                          ])
+                        : (Status == false)
+                            ? CustomScrollView(slivers: [
+                                SliverToBoxAdapter(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(40),
+                                    ),
+                                    margin: EdgeInsets.fromLTRB(15, 0, 15, 40),
+                                    width:
+                                        MediaQuery.of(context).size.width * 1,
+                                    child: Material(
+                                      elevation: 4,
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(40),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(40)),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  1,
+                                              height:
+                                                  (widget.Title.length >= 38)
+                                                      ? MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.25
+                                                      : MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.22,
+                                              child: Material(
+                                                elevation: 5,
+                                                color: Colors.transparent,
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                          colors: [
+                                                            Color.fromARGB(255,
+                                                                0, 76, 255),
+                                                            Color.fromARGB(255,
+                                                                12, 87, 255),
+                                                            Color.fromARGB(255,
+                                                                47, 131, 255),
+                                                          ],
+                                                          begin: Alignment
+                                                              .topCenter,
+                                                          end: Alignment
+                                                              .bottomRight),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30)),
+                                                  child: Container(
+                                                    // color: Colors.red,
+                                                    margin: EdgeInsets.fromLTRB(
+                                                        10, 3, 10, 3),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        BuildItem(
+                                                            iconData: Icons
+                                                                .poll_rounded,
+                                                            WidgetIn:
+                                                                widget.Title,
+                                                            warna: Colors.white,
+                                                            Font: "Poppins",
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w800),
+                                                        BuildItem(
+                                                            iconData: Icons
+                                                                .person_pin_rounded,
+                                                            WidgetIn: widget
+                                                                        .ParticipantData
+                                                                    .toString() +
+                                                                " / " +
+                                                                widget
+                                                                    .Participant,
+                                                            warna: Colors.white,
+                                                            Font: "Poppins",
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w800),
+                                                        BuildItem(
+                                                            iconData: Icons
+                                                                .calendar_month_rounded,
+                                                            WidgetIn:
+                                                                widget.Duration,
+                                                            warna: Colors.white,
+                                                            Font: "Poppins",
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w800),
+                                                        BuildItem(
+                                                            iconData: Icons
+                                                                .question_mark_rounded,
+                                                            WidgetIn:
+                                                                widget.Status,
+                                                            warna: (widget
+                                                                        .Status ==
+                                                                    "Active")
+                                                                ? Color.fromARGB(
+                                                                    255,
+                                                                    0,
+                                                                    255,
+                                                                    8)
+                                                                : (widget.Status ==
+                                                                        "End")
+                                                                    ? Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            248,
+                                                                            17,
+                                                                            0)
+                                                                    : Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            212,
+                                                                            212,
+                                                                            212),
+                                                            Font: "Poppins",
+                                                            fontWeight:
+                                                                FontWeight.w800),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            LayoutBuilder(builder:
+                                                (context, constraints) {
+                                              return Container(
+                                                padding:
+                                                    EdgeInsets.only(bottom: 25),
+                                                margin: EdgeInsets.fromLTRB(
+                                                    15, 15, 15, 0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 10),
+                                                        child: Text(
+                                                            "Description :")),
+                                                    Container(
+                                                      child: Text(
+                                                        widget.Description,
+                                                        style: TextStyle(
+                                                            fontFamily: "Arial",
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color: const Color
+                                                                .fromARGB(
+                                                                255, 2, 24, 43),
+                                                            fontSize: 12),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                width: constraints.maxWidth,
+                                              );
+                                            })
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                      (context, index) {
+                                    final candidate =
+                                        widget.KadidatDetail[index];
+                                    return InkWell(
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return DetailCandidatePage(
+                                            NamaKadidat: candidate.user.name,
+                                            KelasKadidat:
+                                                candidate.user.kelas.namakelas,
+                                            GambarKadidat:
+                                                candidate.user.gambar,
+                                            VisiKadidat: candidate.visi,
+                                            VideoKadidat: candidate.video,
+                                            MisiKadidat: candidate.misi,
+                                          );
+                                        }));
+                                      },
+                                      child: BuildVote(
+                                        candidates: candidate,
+                                      ),
+                                    );
+                                  }, childCount: widget.KadidatDetail.length),
+                                ),
+                              ])
+                            : CustomScrollView(slivers: [
+                                SliverToBoxAdapter(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(40),
+                                    ),
+                                    margin: EdgeInsets.fromLTRB(15, 0, 15, 40),
+                                    width:
+                                        MediaQuery.of(context).size.width * 1,
+                                    child: Material(
+                                      elevation: 4,
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(40),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(40)),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  1,
+                                              height:
+                                                  (widget.Title.length >= 38)
+                                                      ? MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.25
+                                                      : MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.22,
+                                              child: Material(
+                                                elevation: 5,
+                                                color: Colors.transparent,
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                          colors: [
+                                                            Color.fromARGB(255,
+                                                                0, 76, 255),
+                                                            Color.fromARGB(255,
+                                                                12, 87, 255),
+                                                            Color.fromARGB(255,
+                                                                47, 131, 255),
+                                                          ],
+                                                          begin: Alignment
+                                                              .topCenter,
+                                                          end: Alignment
+                                                              .bottomRight),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30)),
+                                                  child: Container(
+                                                    // color: Colors.red,
+                                                    margin: EdgeInsets.fromLTRB(
+                                                        10, 3, 10, 3),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        BuildItem(
+                                                            iconData: Icons
+                                                                .poll_rounded,
+                                                            WidgetIn:
+                                                                widget.Title,
+                                                            warna: Colors.white,
+                                                            Font: "Poppins",
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w800),
+                                                        BuildItem(
+                                                            iconData: Icons
+                                                                .person_pin_rounded,
+                                                            WidgetIn: widget
+                                                                        .ParticipantData
+                                                                    .toString() +
+                                                                " / " +
+                                                                widget
+                                                                    .Participant,
+                                                            warna: Colors.white,
+                                                            Font: "Poppins",
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w800),
+                                                        BuildItem(
+                                                            iconData: Icons
+                                                                .calendar_month_rounded,
+                                                            WidgetIn:
+                                                                widget.Duration,
+                                                            warna: Colors.white,
+                                                            Font: "Poppins",
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w800),
+                                                        BuildItem(
+                                                            iconData: Icons
+                                                                .question_mark_rounded,
+                                                            WidgetIn:
+                                                                widget.Status,
+                                                            warna: (widget
+                                                                        .Status ==
+                                                                    "Active")
+                                                                ? Color.fromARGB(
+                                                                    255,
+                                                                    0,
+                                                                    255,
+                                                                    8)
+                                                                : (widget.Status ==
+                                                                        "End")
+                                                                    ? Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            248,
+                                                                            17,
+                                                                            0)
+                                                                    : Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            212,
+                                                                            212,
+                                                                            212),
+                                                            Font: "Poppins",
+                                                            fontWeight:
+                                                                FontWeight.w800),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            LayoutBuilder(builder:
+                                                (context, constraints) {
+                                              return Container(
+                                                padding:
+                                                    EdgeInsets.only(bottom: 25),
+                                                margin: EdgeInsets.fromLTRB(
+                                                    15, 15, 15, 0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 10),
+                                                        child: Text(
+                                                            "Description :")),
+                                                    Container(
+                                                      child: Text(
+                                                        widget.Description,
+                                                        style: TextStyle(
+                                                            fontFamily: "Arial",
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color: const Color
+                                                                .fromARGB(
+                                                                255, 2, 24, 43),
+                                                            fontSize: 12),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                width: constraints.maxWidth,
+                                              );
+                                            })
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                      (context, index) {
+                                    final candidate =
+                                        widget.KadidatDetail[index];
+                                    return InkWell(
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return DetailCandidatePage(
+                                            NamaKadidat: candidate.user.name,
+                                            KelasKadidat:
+                                                candidate.user.kelas.namakelas,
+                                            GambarKadidat:
+                                                candidate.user.gambar,
+                                            VisiKadidat: candidate.visi,
+                                            VideoKadidat: candidate.video,
+                                            MisiKadidat: candidate.misi,
+                                          );
+                                        }));
+                                      },
+                                      child: BuildVote(
+                                          candidates: candidate,
+                                          isVoted: Isvoted),
+                                    );
+                                  }, childCount: widget.KadidatDetail.length),
+                                ),
+                                SliverToBoxAdapter(
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        top: 35,
+                                        right: 20,
+                                        left: 20,
+                                        bottom: 15),
+                                    height: MediaQuery.of(context).size.height *
+                                        0.07,
+                                    child: Material(
+                                      elevation: 3.5,
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          gradient: LinearGradient(
+                                              colors: [
+                                                Color.fromARGB(255, 0, 76, 255),
+                                                Color.fromARGB(
+                                                    255, 12, 87, 255),
+                                                Color.fromARGB(
+                                                    255, 47, 131, 255),
+                                              ],
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter),
+                                        ),
+                                        child: Material(
+                                          elevation: 0,
+                                          color: Colors.transparent,
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          child: InkWell(
+                                            onTap: () {
+                                              MenujuPilihDheweResult(
+                                                  widget.Event_id);
+                                            },
+                                            splashColor: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            child: Center(
+                                              child: Text(
+                                                "Lihat Hasil",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20,
+                                                    fontFamily: "Poppins",
+                                                    fontWeight:
+                                                        FontWeight.w800),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ]);
                   },
                   // ))
                 ),
               ),
             ),
-          ],
-        ));
+          )
+        ]));
   }
 
   Container BuildVote({
@@ -767,7 +1068,7 @@ class _DetailEventPageState extends State<DetailEventPage> {
 
   Align BuildItem({
     required IconData iconData,
-    required String Widget,
+    required String WidgetIn,
     required Color warna,
     required String Font,
     required FontWeight fontWeight,
@@ -775,22 +1076,17 @@ class _DetailEventPageState extends State<DetailEventPage> {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        // color: Colors.yellow,
         width: MediaQuery.of(context).size.width * 1,
-        height:
-            // MediaQuery.of(context).size.height * 0.04,
-            (Widget != widget.Title)
-                ? MediaQuery.of(context).size.height * 0.04
-                : (widget.Title.length >= 38)
-                    ? MediaQuery.of(context).size.height * 0.07
-                    : MediaQuery.of(context).size.height * 0.04,
-        margin:
-            // EdgeInsets.fromLTRB(0, 3, 0, 0),
-            (Widget != widget.Title)
-                ? EdgeInsets.fromLTRB(0, 3, 0, 0)
-                : (widget.Title.length >= 38)
-                    ? EdgeInsets.fromLTRB(0, 0, 0, 0)
-                    : EdgeInsets.fromLTRB(0, 3, 0, 0),
+        height: (WidgetIn == widget.Title || WidgetIn == widget.Duration)
+            ? (widget.Title.length >= 30 || widget.Duration.length >= 30)
+                ? MediaQuery.of(context).size.height * 0.06
+                : MediaQuery.of(context).size.height * 0.04
+            : MediaQuery.of(context).size.height * 0.04,
+        margin: (WidgetIn == widget.Title || WidgetIn == widget.Duration)
+            ? (widget.Title.length >= 30 || widget.Duration.length >= 30)
+                ? EdgeInsets.fromLTRB(0, 0, 0, 0)
+                : EdgeInsets.fromLTRB(0, 3, 0, 0)
+            : EdgeInsets.fromLTRB(0, 3, 0, 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -806,11 +1102,8 @@ class _DetailEventPageState extends State<DetailEventPage> {
             Container(
               //color: Colors.red,
               width: MediaQuery.of(context).size.width * 0.75,
-              // child: FittedBox(
-              //   alignment: Alignment.centerLeft,
-              //   fit: BoxFit.scaleDown,
               child: Text(
-                Widget,
+                WidgetIn,
                 style: TextStyle(
                     fontFamily: Font,
                     color: warna,
@@ -820,7 +1113,6 @@ class _DetailEventPageState extends State<DetailEventPage> {
                 maxLines: 2,
               ),
             ),
-            //),
           ],
         ),
       ),

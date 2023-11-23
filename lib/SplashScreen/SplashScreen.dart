@@ -30,19 +30,15 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
     var dataGetToken = sharedPreferences.getString('GetToken');
-    var dataUsername = sharedPreferences.getString('Number_Card');
-    var dataPassword = sharedPreferences.getString('Password');
-    var dataTheme = sharedPreferences.getString("Theme");
     if (dataGetToken != null) {
       finalGetToken = dataGetToken!;
-      finalTheme = (finalTheme != null) ? dataTheme! : "Terang";
+      // finalTheme = (finalTheme != null) ? dataTheme! : "Terang";
 
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => HomePage(
               GetToken: finalGetToken,
-              Theme: finalTheme,
             ),
           ));
     } else {
@@ -52,7 +48,6 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
         context,
         MaterialPageRoute(
             builder: (context) => LoginPage(
-                  Theme: finalTheme,
                 )),
       );
     }
